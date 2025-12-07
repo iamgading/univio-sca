@@ -217,20 +217,20 @@ function generateRecommendation(
 ): string {
   if (priority === 'high') {
     if (daysUntilDue <= 1) {
-      return '🚨 Kerjakan SEKARANG! Deadline sangat dekat.';
+      return 'Kerjakan SEKARANG! Deadline sangat dekat.';
     } else if (complexity >= 0.7) {
-      return '⚡ Mulai hari ini! Tugas ini membutuhkan waktu signifikan.';
+      return 'Mulai hari ini! Tugas ini membutuhkan waktu signifikan.';
     } else {
-      return '📌 Prioritaskan tugas ini dalam 1-2 hari ke depan.';
+      return 'Prioritaskan tugas ini dalam 1-2 hari ke depan.';
     }
   } else if (priority === 'medium') {
     if (daysUntilDue <= 3) {
-      return '📅 Rencanakan untuk mulai dalam 1-2 hari.';
+      return 'Rencanakan untuk mulai dalam 1-2 hari.';
     } else {
-      return '✅ Jadwalkan minggu ini, masih ada waktu cukup.';
+      return 'Jadwalkan minggu ini, masih ada waktu cukup.';
     }
   } else {
-    return '📝 Bisa dijadwalkan untuk minggu depan.';
+    return 'Bisa dijadwalkan untuk minggu depan.';
   }
 }
 

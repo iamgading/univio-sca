@@ -6,10 +6,12 @@ import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import { useData } from '@/contexts/DataContext';
+import { useToast } from '@/contexts/ToastContext';
 import { RefreshCw, Check, X, Loader2, Calendar, Mail, MessageCircle, Link as LinkIcon } from 'lucide-react';
 
 export default function IntegrationsPage() {
   const { addTask, addEvent, addNotification } = useData();
+  const { showToast } = useToast();
   const [syncing, setSyncing] = useState<string | null>(null);
   const [showConnectModal, setShowConnectModal] = useState<string | null>(null);
   
@@ -137,6 +139,8 @@ export default function IntegrationsPage() {
       },
     }));
 
+    showToast(`Connected to ${platform === 'siakad' ? 'SIAKAD' : platform === 'email' ? 'Email' : 'WhatsApp'} successfully!`, 'success');
+
     // Auto-sync after connection
     setTimeout(() => {
       handleSync(platform);
@@ -158,12 +162,12 @@ export default function IntegrationsPage() {
         group: '',
       },
     }));
+    showToast(`Disconnected from ${platform === 'siakad' ? 'SIAKAD' : platform === 'email' ? 'Email' : 'WhatsApp'}`, 'info');
   };
 
   const handleSync = async (platform: 'siakad' | 'email' | 'whatsapp') => {
     setSyncing(platform);
 
-    // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 2000));
 
     // Get random tasks
@@ -185,11 +189,13 @@ export default function IntegrationsPage() {
       addNotification({
         id: Date.now().toString(),
         type: 'System',
-        title: '✅ SIAKAD Synced',
+        title: 'SIAKAD Synced',
         description: `Added ${randomTasks.length} new task(s) from SIAKAD`,
         timestamp: new Date().toISOString(),
         read: false,
       });
+
+      showToast(`SIAKAD Synced! Found ${randomTasks.length} new items.`, 'success');
 
       // Update stats
       setConnections(prev => ({
@@ -210,11 +216,13 @@ export default function IntegrationsPage() {
       addNotification({
         id: Date.now().toString(),
         type: 'Tasks',
-        title: '📧 New task from Email',
+        title: 'New task from Email',
         description: randomTasks[0].task,
         timestamp: new Date().toISOString(),
         read: false,
       });
+
+      showToast(`Email Checked! ${randomTasks.length} new tasks found.`, 'success');
 
       setConnections(prev => ({
         ...prev,
@@ -230,11 +238,13 @@ export default function IntegrationsPage() {
       addNotification({
         id: Date.now().toString(),
         type: 'Tasks',
-        title: '💬 New task from WhatsApp',
+        title: 'New task from WhatsApp',
         description: randomTasks[0].task,
         timestamp: new Date().toISOString(),
         read: false,
       });
+
+      showToast('WhatsApp Group synced! New tasks added.', 'success');
 
       setConnections(prev => ({
         ...prev,

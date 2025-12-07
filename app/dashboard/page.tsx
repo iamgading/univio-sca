@@ -190,7 +190,12 @@ export default function StudentDashboard() {
         {/* Upcoming Tasks with AI Priority - Larger */}
         <div className="lg:col-span-2">
           <Card 
-            title="🤖 Upcoming Tasks (AI Prioritized)"
+            title={
+              <div className="flex items-center gap-2">
+                <Sparkles className="text-purple-600" size={20} />
+                <span>Upcoming Tasks (AI Prioritized)</span>
+              </div>
+            }
             subtitle="Tugas diurutkan berdasarkan AI Priority Score"
           >
             <div className="space-y-4">
