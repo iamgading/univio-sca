@@ -1,15 +1,32 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
+import Link from 'next/link';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
+import Button from '@/components/ui/Button';
 import { useData } from '@/contexts/DataContext';
 import { calculateAIPriority } from '@/lib/aiPriority';
-import { Calendar, CheckCircle2, Clock, Sparkles } from 'lucide-react';
+import { Calendar, CheckCircle2, Clock, Sparkles, Link as LinkIcon, X } from 'lucide-react';
 
 export default function StudentDashboard() {
   const { tasks } = useData();
+  const [showBanner, setShowBanner] = useState(false);
+  const [hasConnections, setHasConnections] = useState(false);
+  
+  // Check connection status
+  useEffect(() => {
+    const saved = localStorage.getItem('univio_connections');
+    if (saved) {
+      const connections = JSON.parse(saved);
+      const connected = connections.siakad?.connected || connections.email?.connected || connections.whatsapp?.connected;
+      setHasConnections(connected);
+      setShowBanner(!connected);
+    } else {
+      setShowBanner(true);
+    }
+  }, []);
   
   // Calculate AI priorities for all tasks
   const tasksWithAI = useMemo(() => {
@@ -83,6 +100,38 @@ export default function StudentDashboard() {
       pageSubtitle="Selamat datang kembali!"
       userName="Gading Satrio"
     >
+      {/* Connection Banner */}
+      {showBanner && (
+        <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg">
+          <div className="flex items-start justify-between">
+            <div className="flex items-start gap-3 flex-1">
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <LinkIcon className="text-blue-600" size={20} />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-slate-900 mb-1">Connect Your Platforms</h3>
+                <p className="text-sm text-slate-600 mb-3">
+                  Connect SIAKAD, Email, or WhatsApp to automatically sync your tasks and schedules. 
+                  Get AI-powered priority recommendations!
+                </p>
+                <Link href="/settings/integrations">
+                  <Button variant="primary" size="sm">
+                    <LinkIcon size={16} className="mr-2" />
+                    Connect Now
+                  </Button>
+                </Link>
+              </div>
+            </div>
+            <button 
+              onClick={() => setShowBanner(false)}
+              className="text-slate-400 hover:text-slate-600"
+            >
+              <X size={20} />
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Today Overview - 3 Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <Card>
