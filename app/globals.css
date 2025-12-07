@@ -1,26 +1,65 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Background Colors */
+  --background: #F3F4F6;
+  --surface: #FFFFFF;
+  
+  /* Text Colors */
+  --foreground: #111827;
+  --foreground-secondary: #4B5563;
+  
+  /* Primary Colors - Teal */
+  --primary: #14B8A6;
+  --primary-hover: #0D9488;
+  --primary-light: #5EEAD4;
+  
+  /* Accent Colors */
+  --accent-success: #10B981;
+  --accent-warning: #F59E0B;
+  --accent-error: #EF4444;
+  --accent-info: #3B82F6;
+  
+  /* Border & Divider */
+  --border: #E5E7EB;
+  --border-light: #F3F4F6;
 }
 
 @theme inline {
+  /* Custom color tokens */
   --color-background: var(--background);
+  --color-surface: var(--surface);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-foreground-secondary: var(--foreground-secondary);
+  
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-light: var(--primary-light);
+  
+  --color-success: var(--accent-success);
+  --color-warning: var(--accent-warning);
+  --color-error: var(--accent-error);
+  --color-info: var(--accent-info);
+  
+  --color-border: var(--border);
+  --color-border-light: var(--border-light);
+  
+  /* Font family */
+  --font-sans: var(--font-inter);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+}
+
+/* Utility classes for consistent spacing */
+.container-padding {
+  @apply px-4 py-6 lg:px-6;
+}
+
+/* Smooth transitions */
+* {
+  @apply transition-colors duration-200;
 }
